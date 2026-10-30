@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="pt-PT"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex">
+<title>Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0a0a0a;--g:#f3f3f1;--l:#e4e4e2;--m:#8a8a8a;--f:'Inter Tight',Arial,sans-serif}
+*{box-sizing:border-box;margin:0}body{font:14px/1.45 var(--f);background:#fff;color:var(--ink)}
+button{font:inherit;cursor:pointer;border:1px solid var(--ink);background:#fff;padding:8px 14px}
+button.p{background:var(--ink);color:#fff}button.r{color:#b3261e;border-color:#e4c5c2}
+input,select,textarea{font:inherit;width:100%;padding:10px;border:1px solid var(--l);background:#fff}
+textarea{min-height:90px}label{display:block;font-size:12px;color:var(--m);margin:12px 0 4px}
+.top{display:flex;justify-content:space-between;align-items:center;padding:14px 24px;border-bottom:1px solid var(--l);position:sticky;top:0;background:#fff;z-index:5}
+.top b{font-size:18px;letter-spacing:.08em}.tabs{display:flex;gap:8px}.tabs button[aria-pressed=true]{background:var(--ink);color:#fff}
+main{max-width:1000px;margin:0 auto;padding:24px}
+#login{max-width:340px;margin:12vh auto;padding:0 20px}#login h1{margin-bottom:8px}
+.row{display:grid;grid-template-columns:56px 1fr 120px 90px auto;gap:14px;align-items:center;padding:12px 0;border-bottom:1px solid var(--l)}
+.th{width:56px;aspect-ratio:4/5;background:var(--g) center/cover}.row small{color:var(--m)}.off{opacity:.45}
+.acts{display:flex;gap:6px}.bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+dialog{border:0;width:min(640px,94%);padding:26px;max-height:92vh}dialog::backdrop{background:rgba(0,0,0,.45)}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px}.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+input[type=color]{padding:2px;height:42px}input[type=checkbox]{width:auto}
+.msg{padding:10px 0;font-weight:500;min-height:20px}
+@media(max-width:700px){.row{grid-template-columns:48px 1fr auto}.row>:nth-child(3),.row>:nth-child(4){display:none}.g2,.g3{grid-template-columns:1fr}}
+</style></head><body>
+<div id="login"><h1>Admin</h1><p style="color:var(--m)">Entra com a tua conta.</p>
+ <label>Email</label><input id="le" type="email" autocomplete="username"><label>Palavra-passe</label><input id="lp" type="password" autocomplete="current-password">
+ <div class="msg" id="lm" style="color:#b3261e"></div><button class="p" id="lb" style="width:100%">Entrar</button></div>
+
+<div id="app" hidden>
+ <div class="top"><b>ADMIN</b><div class="tabs"><button id="t1" aria-pressed="true">Produtos</button><button id="t2" aria-pressed="false">Definições</button></div><div><a href="index.html" target="_blank" style="margin-right:14px">Ver loja</a><button id="out">Sair</button></div></div>
+ <main>
+  <section id="v1"><div class="bar"><h2>Produtos</h2><button class="p" id="new">+ Novo produto</button></div><div id="list"></div></section>
+  <section id="v2" hidden><h2 style="margin-bottom:6px">Definições da loja</h2>
+   <div class="g2"><div><label>Nome da marca</label><input id="s-brand"></div><div><label>Portes grátis a partir de (€)</label><input id="s-freeShip" type="number"></div>
+   <div><label>Hero: linha pequena</label><input id="s-heroSmall"></div><div><label>Hero: título</label><input id="s-heroTitle"></div>
+   <div><label>WhatsApp (ex.: 351912345678)</label><input id="s-whatsapp"></div><div><label>Email para encomendas</label><input id="s-email"></div></div>
+   <label>Imagem do hero (URL ou carregar)</label><input id="s-heroImage"><input type="file" id="s-hf" accept="image/*" style="margin-top:6px">
+   <label>Avisos no topo (um por linha)</label><textarea id="s-marquee"></textarea>
+   <label>Lojas físicas (uma por linha: Cidade|Morada e horário)</label><textarea id="s-stores"></textarea>
+   <div class="msg" id="sm"></div><button class="p" id="ss">Guardar definições</button></section>
+ </main>
+</div>
+
+<dialog id="dg"><h2 id="dt">Produto</h2>
+ <div class="g2"><div><label>Nome</label><input id="f-name"></div><div><label>Variante / cor</label><input id="f-variant"></div>
+ <div><label>Preço (€)</label><input id="f-price" type="number" step="0.01"></div><div><label>Preço antigo (€, opcional)</label><input id="f-old" type="number" step="0.01"></div>
+ <div><label>Categoria (cria uma nova escrevendo)</label><input id="f-cat" list="cats"><datalist id="cats"></datalist></div><div><label>Etiqueta (ex.: Novo)</label><input id="f-tag"></div>
+ <div><label>Tamanhos (separados por vírgula)</label><input id="f-sizes" placeholder="S,M,L,XL"></div><div><label>Tamanhos esgotados</label><input id="f-out" placeholder="XL"></div></div>
+ <div class="g3"><div><label>Cor 1</label><input id="f-a" type="color" value="#23272c"></div><div><label>Cor 2</label><input id="f-b" type="color" value="#3a4047"></div><div><label>Ordem (0 = primeiro)</label><input id="f-sort" type="number" value="0"></div></div>
+ <div class="g2"><div><label>Foto 1 (frente)</label><input id="f-i1" type="file" accept="image/*"><small id="c1" style="color:var(--m)"></small></div><div><label>Foto 2 (ao passar o rato)</label><input id="f-i2" type="file" accept="image/*"><small id="c2" style="color:var(--m)"></small></div></div>
+ <label><input type="checkbox" id="f-act" checked> Visível na loja</label>
+ <div class="msg" id="fm"></div>
+ <div class="acts"><button class="p" id="fs">Guardar</button><button id="fc">Cancelar</button></div></dialog>
+
+<script src="config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script>
+const $=s=>document.querySelector(s);
+if(!window.CFG||CFG.url.includes('SEU-PROJETO')){document.body.innerHTML='<p style="padding:40px">Preenche o ficheiro config.js com o URL e a chave do teu projeto Supabase.</p>';throw 0}
+const sb=supabase.createClient(CFG.url,CFG.key);
+let rows=[],cur=null;
+const list=s=>(s||'').split(',').map(x=>x.trim()).filter(Boolean);
+async function start(){const{data:{session}}=await sb.auth.getSession();session?show():($('#login').hidden=false)}
+async function show(){$('#login').hidden=true;$('#app').hidden=false;await load();await loadS()}
+$('#lb').onclick=async()=>{const{error}=await sb.auth.signInWithPassword({email:$('#le').value,password:$('#lp').value});error?$('#lm').textContent='Email ou palavra-passe incorretos.':show()};
+$('#out').onclick=async()=>{await sb.auth.signOut();location.reload()};
+$('#t1').onclick=()=>tab(1);$('#t2').onclick=()=>tab(2);
+function tab(n){$('#v1').hidden=n!==1;$('#v2').hidden=n!==2;$('#t1').setAttribute('aria-pressed',n===1);$('#t2').setAttribute('aria-pressed',n===2)}
+async function load(){
+  const{data,error}=await sb.from('products').select('*').order('category').order('sort').order('id');
+  if(error){$('#list').textContent='Erro: '+error.message;return}
+  rows=data;$('#cats').innerHTML=[...new Set(rows.map(r=>r.category))].map(c=>`<option value="${c}">`).join('');
+  $('#list').innerHTML=rows.length?rows.map(r=>`<div class="row ${r.active?'':'off'}"><div class="th" style="background-image:${r.img?`url(${r.img})`:`linear-gradient(160deg,${r.color_a},${r.color_b})`}"></div><div><b>${r.name}</b> ${r.variant||''}<br><small>${(r.sizes||[]).join(' · ')}${r.tag?' · '+r.tag:''}</small></div><div>${r.category}</div><div>${r.price} €</div><div class="acts"><button data-e="${r.id}">Editar</button><button data-d="${r.id}">Duplicar</button><button class="r" data-x="${r.id}">Eliminar</button></div></div>`).join(''):'<p style="color:var(--m)">Ainda não tens produtos.</p>'}
+$('#list').onclick=async e=>{
+  const t=e.target.dataset,id=t.e||t.d||t.x;if(!id)return;const r=rows.find(x=>x.id==id);
+  if(t.e)openF(r);
+  if(t.d){const{id:_,created_at:__,...c}=r;await sb.from('products').insert({...c,variant:(c.variant||'')+' (cópia)'});load()}
+  if(t.x&&confirm('Eliminar "'+r.name+'"? Isto não se pode desfazer.')){await sb.from('products').delete().eq('id',id);load()}};
+$('#new').onclick=()=>openF(null);
+function openF(r){
+  cur=r;$('#dt').textContent=r?'Editar produto':'Novo produto';$('#fm').textContent='';
+  const v=(k,x)=>$('#f-'+k).value=x;
+  v('name',r?.name||'');v('variant',r?.variant||'');v('price',r?.price??'');v('old',r?.old_price??'');v('cat',r?.category||'');v('tag',r?.tag||'');
+  v('sizes',(r?.sizes||[]).join(','));v('out',(r?.out_sizes||[]).join(','));v('a',r?.color_a||'#23272c');v('b',r?.color_b||'#3a4047');v('sort',r?.sort||0);
+  $('#f-act').checked=r?r.active:true;$('#f-i1').value=$('#f-i2').value='';$('#c1').textContent=r?.img?'Já tem foto. Escolhe outra para substituir.':'';$('#c2').textContent=r?.img2?'Já tem foto. Escolhe outra para substituir.':'';
+  $('#dg').showModal()}
+$('#fc').onclick=()=>$('#dg').close();
+async function up(file){
+  const path=Date.now()+'-'+file.name.toLowerCase().replace(/[^a-z0-9.]+/g,'-');
+  const{error}=await sb.storage.from('products').upload(path,file,{upsert:true});if(error)throw error;
+  return sb.storage.from('products').getPublicUrl(path).data.publicUrl}
+$('#fs').onclick=async()=>{
+  const g=k=>$('#f-'+k).value.trim();
+  if(!g('name')||!g('price')||!g('cat')){$('#fm').textContent='Preenche nome, preço e categoria.';return}
+  $('#fm').textContent='A guardar...';
+  try{
+    const o={name:g('name'),variant:g('variant')||null,price:+g('price'),old_price:g('old')?+g('old'):null,category:g('cat'),tag:g('tag')||null,sizes:list(g('sizes')).length?list(g('sizes')):['Único'],out_sizes:list(g('out')),color_a:g('a'),color_b:g('b'),sort:+g('sort')||0,active:$('#f-act').checked,img:cur?.img||null,img2:cur?.img2||null};
+    if($('#f-i1').files[0])o.img=await up($('#f-i1').files[0]);
+    if($('#f-i2').files[0])o.img2=await up($('#f-i2').files[0]);
+    const{error}=cur?await sb.from('products').update(o).eq('id',cur.id):await sb.from('products').insert(o);
+    if(error)throw error;$('#dg').close();load();
+  }catch(e){$('#fm').textContent='Erro: '+(e.message||e)}};
+const K=['brand','freeShip','heroSmall','heroTitle','whatsapp','email','heroImage','marquee','stores'];
+async function loadS(){const{data}=await sb.from('settings').select('*');(data||[]).forEach(r=>{if(K.includes(r.key))$('#s-'+r.key).value=r.value||''})}
+$('#s-hf').onchange=async e=>{try{$('#s-heroImage').value=await up(e.target.files[0]);$('#sm').textContent='Imagem carregada. Carrega em Guardar.'}catch(x){$('#sm').textContent='Erro: '+x.message}};
+$('#ss').onclick=async()=>{const{error}=await sb.from('settings').upsert(K.map(k=>({key:k,value:$('#s-'+k).value})));$('#sm').textContent=error?'Erro: '+error.message:'Guardado. A loja já mostra as alterações.'};
+start();
+</script></body></html>
