@@ -8,43 +8,45 @@
 button{font:inherit;cursor:pointer;border:1px solid var(--ink);background:#fff;padding:8px 14px}
 button.p{background:var(--ink);color:#fff}button.r{color:#b3261e;border-color:#e4c5c2}
 input,select,textarea{font:inherit;width:100%;padding:10px;border:1px solid var(--l);background:#fff}
-textarea{min-height:90px}label{display:block;font-size:12px;color:var(--m);margin:12px 0 4px}
-.top{display:flex;justify-content:space-between;align-items:center;padding:14px 24px;border-bottom:1px solid var(--l);position:sticky;top:0;background:#fff;z-index:5}
+textarea{min-height:84px}label{display:block;font-size:12px;color:var(--m);margin:12px 0 4px}
+.top{display:flex;justify-content:space-between;align-items:center;padding:14px 24px;border-bottom:1px solid var(--l);position:sticky;top:0;background:#fff;z-index:5;gap:12px;flex-wrap:wrap}
 .top b{font-size:18px;letter-spacing:.08em}.tabs{display:flex;gap:8px}.tabs button[aria-pressed=true]{background:var(--ink);color:#fff}
 main{max-width:1000px;margin:0 auto;padding:24px}
 #login{max-width:340px;margin:12vh auto;padding:0 20px}#login h1{margin-bottom:8px}
 .row{display:grid;grid-template-columns:56px 1fr 120px 90px auto;gap:14px;align-items:center;padding:12px 0;border-bottom:1px solid var(--l)}
+.row.c{grid-template-columns:1fr 100px 70px auto}
 .th{width:56px;aspect-ratio:4/5;background:var(--g) center/cover}.row small{color:var(--m)}.off{opacity:.45}
 .acts{display:flex;gap:6px}.bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
 dialog{border:0;width:min(640px,94%);padding:26px;max-height:92vh}dialog::backdrop{background:rgba(0,0,0,.45)}
 .g2{display:grid;grid-template-columns:1fr 1fr;gap:14px}.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
 input[type=color]{padding:2px;height:42px}input[type=checkbox]{width:auto}
 .msg{padding:10px 0;font-weight:500;min-height:20px}
-@media(max-width:700px){.row{grid-template-columns:48px 1fr auto}.row>:nth-child(3),.row>:nth-child(4){display:none}.g2,.g3{grid-template-columns:1fr}}
+details{border:1px solid var(--l);margin-bottom:10px;padding:0 16px}summary{padding:14px 0;font-weight:600;cursor:pointer}
+details>div{padding-bottom:16px}.im{display:flex;gap:8px}.im input[type=file]{max-width:230px}.pv{height:34px;margin-top:6px;display:block}
+.sv{position:sticky;bottom:0;background:#fff;padding:12px 0;border-top:1px solid var(--l);display:flex;gap:14px;align-items:center}
+.hint{color:var(--m);font-size:12px;margin-bottom:14px}
+@media(max-width:700px){.row{grid-template-columns:48px 1fr auto}.row>:nth-child(3),.row>:nth-child(4){display:none}.row.c{grid-template-columns:1fr auto}.row.c>:nth-child(2),.row.c>:nth-child(3){display:none}.g2,.g3{grid-template-columns:1fr}}
 </style></head><body>
 <div id="login"><h1>Admin</h1><p style="color:var(--m)">Entra com a tua conta.</p>
  <label>Email</label><input id="le" type="email" autocomplete="username"><label>Palavra-passe</label><input id="lp" type="password" autocomplete="current-password">
  <div class="msg" id="lm" style="color:#b3261e"></div><button class="p" id="lb" style="width:100%">Entrar</button></div>
 
 <div id="app" hidden>
- <div class="top"><b>ADMIN</b><div class="tabs"><button id="t1" aria-pressed="true">Produtos</button><button id="t2" aria-pressed="false">Definições</button></div><div><a href="index.html" target="_blank" style="margin-right:14px">Ver loja</a><button id="out">Sair</button></div></div>
+ <div class="top"><b>ADMIN</b><div class="tabs"><button id="t1" aria-pressed="true">Produtos</button><button id="t3" aria-pressed="false">Categorias</button><button id="t2" aria-pressed="false">Textos e imagens</button></div><div><a href="index.html" target="_blank" style="margin-right:14px">Ver loja</a><button id="out">Sair</button></div></div>
  <main>
   <section id="v1"><div class="bar"><h2>Produtos</h2><button class="p" id="new">+ Novo produto</button></div><div id="list"></div></section>
-  <section id="v2" hidden><h2 style="margin-bottom:6px">Definições da loja</h2>
-   <div class="g2"><div><label>Nome da marca</label><input id="s-brand"></div><div><label>Portes grátis a partir de (€)</label><input id="s-freeShip" type="number"></div>
-   <div><label>Hero: linha pequena</label><input id="s-heroSmall"></div><div><label>Hero: título</label><input id="s-heroTitle"></div>
-   <div><label>WhatsApp (ex.: 351912345678)</label><input id="s-whatsapp"></div><div><label>Email para encomendas</label><input id="s-email"></div></div>
-   <label>Imagem do hero (URL ou carregar)</label><input id="s-heroImage"><input type="file" id="s-hf" accept="image/*" style="margin-top:6px">
-   <label>Avisos no topo (um por linha)</label><textarea id="s-marquee"></textarea>
-   <label>Lojas físicas (uma por linha: Cidade|Morada e horário)</label><textarea id="s-stores"></textarea>
-   <div class="msg" id="sm"></div><button class="p" id="ss">Guardar definições</button></section>
+  <section id="v3" hidden><div class="bar"><h2>Categorias</h2><button class="p" id="newc">+ Nova categoria</button></div>
+   <p class="hint">A ordem define como aparecem no menu e na página. Se escondes uma categoria, os produtos dela deixam de aparecer na loja.</p><div id="clist"></div></section>
+  <section id="v2" hidden><h2 style="margin-bottom:6px">Textos e imagens do site</h2>
+   <p class="hint">Tudo o que aparece na loja pode ser mudado aqui. Se deixares um campo vazio, a loja usa o texto por defeito (mostrado a cinzento).</p>
+   <div id="tx"></div><div class="sv"><button class="p" id="ss">Guardar tudo</button><span class="msg" id="sm"></span></div></section>
  </main>
 </div>
 
 <dialog id="dg"><h2 id="dt">Produto</h2>
  <div class="g2"><div><label>Nome</label><input id="f-name"></div><div><label>Variante / cor</label><input id="f-variant"></div>
  <div><label>Preço (€)</label><input id="f-price" type="number" step="0.01"></div><div><label>Preço antigo (€, opcional)</label><input id="f-old" type="number" step="0.01"></div>
- <div><label>Categoria (cria uma nova escrevendo)</label><input id="f-cat" list="cats"><datalist id="cats"></datalist></div><div><label>Etiqueta (ex.: Novo)</label><input id="f-tag"></div>
+ <div><label>Categoria (escreve uma nova para a criar)</label><input id="f-cat" list="cats"><datalist id="cats"></datalist></div><div><label>Etiqueta (ex.: Novo)</label><input id="f-tag"></div>
  <div><label>Tamanhos (separados por vírgula)</label><input id="f-sizes" placeholder="S,M,L,XL"></div><div><label>Tamanhos esgotados</label><input id="f-out" placeholder="XL"></div></div>
  <div class="g3"><div><label>Cor 1</label><input id="f-a" type="color" value="#23272c"></div><div><label>Cor 2</label><input id="f-b" type="color" value="#3a4047"></div><div><label>Ordem (0 = primeiro)</label><input id="f-sort" type="number" value="0"></div></div>
  <div class="g2"><div><label>Foto 1 (frente)</label><input id="f-i1" type="file" accept="image/*"><small id="c1" style="color:var(--m)"></small></div><div><label>Foto 2 (ao passar o rato)</label><input id="f-i2" type="file" accept="image/*"><small id="c2" style="color:var(--m)"></small></div></div>
@@ -52,25 +54,37 @@ input[type=color]{padding:2px;height:42px}input[type=checkbox]{width:auto}
  <div class="msg" id="fm"></div>
  <div class="acts"><button class="p" id="fs">Guardar</button><button id="fc">Cancelar</button></div></dialog>
 
+<dialog id="cd"><h2 id="cdt">Categoria</h2>
+ <label>Nome (aparece no menu)</label><input id="c-name">
+ <label>Título na página (opcional; se vazio usa o nome)</label><input id="c-title">
+ <label>Ordem (0 = primeiro)</label><input id="c-sort" type="number" value="0">
+ <label><input type="checkbox" id="c-act" checked> Visível na loja</label>
+ <div class="msg" id="cm"></div>
+ <div class="acts"><button class="p" id="cs">Guardar</button><button id="cc">Cancelar</button></div></dialog>
+
+<script src="texts.js"></script>
 <script src="config.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
 <script>
 const $=s=>document.querySelector(s);
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 if(!window.CFG||CFG.url.includes('SEU-PROJETO')){document.body.innerHTML='<p style="padding:40px">Preenche o ficheiro config.js com o URL e a chave do teu projeto Supabase.</p>';throw 0}
 const sb=supabase.createClient(CFG.url,CFG.key);
-let rows=[],cur=null;
+let rows=[],cats=[],cur=null,curC=null;
 const list=s=>(s||'').split(',').map(x=>x.trim()).filter(Boolean);
 async function start(){const{data:{session}}=await sb.auth.getSession();session?show():($('#login').hidden=false)}
-async function show(){$('#login').hidden=true;$('#app').hidden=false;await load();await loadS()}
+async function show(){$('#login').hidden=true;$('#app').hidden=false;buildTx();await loadC();await load();await loadS()}
 $('#lb').onclick=async()=>{const{error}=await sb.auth.signInWithPassword({email:$('#le').value,password:$('#lp').value});error?$('#lm').textContent='Email ou palavra-passe incorretos.':show()};
 $('#out').onclick=async()=>{await sb.auth.signOut();location.reload()};
-$('#t1').onclick=()=>tab(1);$('#t2').onclick=()=>tab(2);
-function tab(n){$('#v1').hidden=n!==1;$('#v2').hidden=n!==2;$('#t1').setAttribute('aria-pressed',n===1);$('#t2').setAttribute('aria-pressed',n===2)}
+[1,2,3].forEach(n=>$('#t'+n).onclick=()=>tab(n));
+function tab(n){[1,2,3].forEach(i=>{$('#v'+i).hidden=i!==n;$('#t'+i).setAttribute('aria-pressed',i===n)})}
+
+/* PRODUTOS */
 async function load(){
   const{data,error}=await sb.from('products').select('*').order('category').order('sort').order('id');
   if(error){$('#list').textContent='Erro: '+error.message;return}
-  rows=data;$('#cats').innerHTML=[...new Set(rows.map(r=>r.category))].map(c=>`<option value="${c}">`).join('');
-  $('#list').innerHTML=rows.length?rows.map(r=>`<div class="row ${r.active?'':'off'}"><div class="th" style="background-image:${r.img?`url(${r.img})`:`linear-gradient(160deg,${r.color_a},${r.color_b})`}"></div><div><b>${r.name}</b> ${r.variant||''}<br><small>${(r.sizes||[]).join(' · ')}${r.tag?' · '+r.tag:''}</small></div><div>${r.category}</div><div>${r.price} €</div><div class="acts"><button data-e="${r.id}">Editar</button><button data-d="${r.id}">Duplicar</button><button class="r" data-x="${r.id}">Eliminar</button></div></div>`).join(''):'<p style="color:var(--m)">Ainda não tens produtos.</p>'}
+  rows=data;drawCats();
+  $('#list').innerHTML=rows.length?rows.map(r=>`<div class="row ${r.active?'':'off'}"><div class="th" style="background-image:${r.img?`url(${esc(r.img)})`:`linear-gradient(160deg,${r.color_a},${r.color_b})`}"></div><div><b>${esc(r.name)}</b> ${esc(r.variant)}<br><small>${esc((r.sizes||[]).join(' · '))}${r.tag?' · '+esc(r.tag):''}</small></div><div>${esc(r.category)}</div><div>${r.price} €</div><div class="acts"><button data-e="${r.id}">Editar</button><button data-d="${r.id}">Duplicar</button><button class="r" data-x="${r.id}">Eliminar</button></div></div>`).join(''):'<p style="color:var(--m)">Ainda não tens produtos.</p>'}
 $('#list').onclick=async e=>{
   const t=e.target.dataset,id=t.e||t.d||t.x;if(!id)return;const r=rows.find(x=>x.id==id);
   if(t.e)openF(r);
@@ -97,12 +111,55 @@ $('#fs').onclick=async()=>{
     const o={name:g('name'),variant:g('variant')||null,price:+g('price'),old_price:g('old')?+g('old'):null,category:g('cat'),tag:g('tag')||null,sizes:list(g('sizes')).length?list(g('sizes')):['Único'],out_sizes:list(g('out')),color_a:g('a'),color_b:g('b'),sort:+g('sort')||0,active:$('#f-act').checked,img:cur?.img||null,img2:cur?.img2||null};
     if($('#f-i1').files[0])o.img=await up($('#f-i1').files[0]);
     if($('#f-i2').files[0])o.img2=await up($('#f-i2').files[0]);
+    if(!cats.some(c=>c.name===o.category)){const{error:ec}=await sb.from('categories').insert({name:o.category,sort:cats.length});if(ec)throw ec;await loadC()}
     const{error}=cur?await sb.from('products').update(o).eq('id',cur.id):await sb.from('products').insert(o);
     if(error)throw error;$('#dg').close();load();
   }catch(e){$('#fm').textContent='Erro: '+(e.message||e)}};
-const K=['brand','freeShip','heroSmall','heroTitle','whatsapp','email','heroImage','marquee','stores'];
-async function loadS(){const{data}=await sb.from('settings').select('*');(data||[]).forEach(r=>{if(K.includes(r.key))$('#s-'+r.key).value=r.value||''})}
-$('#s-hf').onchange=async e=>{try{$('#s-heroImage').value=await up(e.target.files[0]);$('#sm').textContent='Imagem carregada. Carrega em Guardar.'}catch(x){$('#sm').textContent='Erro: '+x.message}};
-$('#ss').onclick=async()=>{const{error}=await sb.from('settings').upsert(K.map(k=>({key:k,value:$('#s-'+k).value})));$('#sm').textContent=error?'Erro: '+error.message:'Guardado. A loja já mostra as alterações.'};
+
+/* CATEGORIAS */
+async function loadC(){
+  const{data,error}=await sb.from('categories').select('*').order('sort').order('id');
+  if(error){$('#clist').innerHTML='<p style="color:#b3261e">Falta criar a tabela de categorias. Corre o ficheiro setup2.sql no Supabase.</p>';cats=[];return}
+  cats=data;$('#cats').innerHTML=cats.map(c=>`<option value="${esc(c.name)}">`).join('');drawCats()}
+function drawCats(){
+  if(!cats.length&&!$('#clist').textContent.includes('setup2'))$('#clist').innerHTML='<p style="color:var(--m)">Ainda não tens categorias.</p>';
+  if(!cats.length)return;
+  $('#clist').innerHTML=cats.map(c=>{const n=rows.filter(r=>r.category===c.name).length;return `<div class="row c ${c.active?'':'off'}"><div><b>${esc(c.name)}</b>${c.title?`<br><small>Título: ${esc(c.title)}</small>`:''}</div><div>${n} produto(s)</div><div>Ordem ${c.sort}</div><div class="acts"><button data-ce="${c.id}">Editar</button><button class="r" data-cx="${c.id}">Eliminar</button></div></div>`}).join('')}
+$('#clist').onclick=async e=>{
+  const t=e.target.dataset;if(t.ce)openC(cats.find(c=>c.id==t.ce));
+  if(t.cx){const c=cats.find(x=>x.id==t.cx),n=rows.filter(r=>r.category===c.name).length;
+    if(!confirm(n?`"${c.name}" tem ${n} produto(s). Se continuares, também serão eliminados. Continuar?`:`Eliminar a categoria "${c.name}"?`))return;
+    if(n)await sb.from('products').delete().eq('category',c.name);
+    await sb.from('categories').delete().eq('id',c.id);await loadC();load()}};
+$('#newc').onclick=()=>openC(null);
+function openC(c){curC=c;$('#cdt').textContent=c?'Editar categoria':'Nova categoria';$('#cm').textContent='';$('#c-name').value=c?.name||'';$('#c-title').value=c?.title||'';$('#c-sort').value=c?.sort??cats.length;$('#c-act').checked=c?c.active:true;$('#cd').showModal()}
+$('#cc').onclick=()=>$('#cd').close();
+$('#cs').onclick=async()=>{
+  const name=$('#c-name').value.trim();if(!name){$('#cm').textContent='Escreve o nome.';return}
+  if(cats.some(c=>c.name.toLowerCase()===name.toLowerCase()&&c.id!==curC?.id)){$('#cm').textContent='Já existe uma categoria com esse nome.';return}
+  const o={name,title:$('#c-title').value.trim()||null,sort:+$('#c-sort').value||0,active:$('#c-act').checked};
+  let err;
+  if(curC){({error:err}=await sb.from('categories').update(o).eq('id',curC.id));
+    if(!err&&curC.name!==name)({error:err}=await sb.from('products').update({category:name}).eq('category',curC.name))}
+  else({error:err}=await sb.from('categories').insert(o));
+  if(err){$('#cm').textContent='Erro: '+err.message;return}
+  $('#cd').close();await loadC();load()};
+
+/* TEXTOS E IMAGENS */
+function buildTx(){
+  const gs=[...new Set(TXT.map(x=>x.g))];
+  $('#tx').innerHTML=gs.map((g,i)=>`<details ${i<3?'open':''}><summary>${esc(g)}</summary><div>${TXT.filter(x=>x.g===g).map(x=>{
+    const id='t-'+x.k,ph=`placeholder="${esc(x.d)}"`;
+    if(x.t==='multi')return `<label>${esc(x.l)}</label><textarea id="${id}" ${ph}></textarea>`;
+    if(x.t==='img')return `<label>${esc(x.l)}</label><div class="im"><input id="${id}" placeholder="URL da imagem"><input type="file" accept="image/*" data-f="${id}"></div><img class="pv" id="pv-${x.k}" alt="" hidden>`;
+    return `<label>${esc(x.l)}</label><input id="${id}" ${x.t==='num'?'type="number"':''} ${ph}>`}).join('')}</div></details>`).join('');
+  $('#tx').onchange=async e=>{const f=e.target.dataset.f;if(!f||!e.target.files[0])return;$('#sm').textContent='A carregar imagem...';
+    try{$('#'+f).value=await up(e.target.files[0]);prev();$('#sm').textContent='Imagem carregada. Carrega em Guardar tudo.'}catch(x){$('#sm').textContent='Erro: '+x.message}};
+  $('#tx').oninput=prev}
+function prev(){TXT.filter(x=>x.t==='img').forEach(x=>{const p=$('#pv-'+x.k),v=$('#t-'+x.k).value;p.hidden=!v;if(v)p.src=v})}
+async function loadS(){const{data}=await sb.from('settings').select('*');(data||[]).forEach(r=>{const e=$('#t-'+r.key);if(e)e.value=r.value||''});prev()}
+$('#ss').onclick=async()=>{
+  const{error}=await sb.from('settings').upsert(TXT.map(x=>({key:x.k,value:$('#t-'+x.k).value})));
+  $('#sm').textContent=error?'Erro: '+error.message:'Guardado. A loja já mostra as alterações.'};
 start();
 </script></body></html>
